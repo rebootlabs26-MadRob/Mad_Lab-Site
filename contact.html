@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Contact — ReBoot Lab</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg-dark: #0a0a1a;
+    --bg-navy: #0f1729;
+    --neon-green: #00ff66;
+    --neon-cyan: #00ffff;
+    --neon-purple: #bf00ff;
+    --neon-pink: #ff00ff;
+    --text-bright: #e0f0ff;
+    --text-muted: #8899bb;
+    --glow-green: rgba(0, 255, 102, 0.6);
+    --glow-cyan: rgba(0, 255, 255, 0.6);
+    --glow-purple: rgba(191, 0, 255, 0.6);
+  }
+
+  * { 
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-navy) 100%);
+    color: var(--text-bright);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Subtle circuit animation background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      repeating-linear-gradient(90deg, transparent 0, transparent 79px, rgba(0, 255, 102, 0.05) 79px, rgba(0, 255, 102, 0.05) 81px),
+      repeating-linear-gradient(0deg, transparent 0, transparent 79px, rgba(0, 255, 255, 0.05) 79px, rgba(0, 255, 255, 0.05) 81px);
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      repeating-linear-gradient(90deg, transparent 0, transparent 79px, var(--neon-green) 79px, var(--neon-green) 81px),
+      repeating-linear-gradient(0deg, transparent 0, transparent 79px, var(--neon-cyan) 79px, var(--neon-cyan) 81px);
+    opacity: 0.03;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(20px);
+    background: rgba(10, 10, 26, 0.85);
+    border-bottom: 2px solid var(--neon-green);
+    box-shadow: 0 4px 20px rgba(0, 255, 102, 0.3);
+    z-index: 100;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--neon-green);
+    text-shadow: 0 0 20px var(--glow-green);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-bright);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--neon-green);
+    text-shadow: 0 0 10px var(--glow-green);
+  }
+
+  .page-header {
+    text-align: center;
+    padding: 4rem 2rem 2rem;
+  }
+
+  .page-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--neon-green);
+    text-shadow: 0 0 30px var(--glow-green);
+    margin-bottom: 1rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.3rem;
+    color: var(--neon-purple);
+    text-shadow: 0 0 15px var(--glow-purple);
+  }
+
+  .contact-content {
+    padding: 3rem 2rem 5rem;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .contact-card {
+    background: rgba(15, 23, 41, 0.6);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 20px;
+    padding: 3rem;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .contact-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px var(--glow-cyan);
+  }
+
+  .contact-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-card h3 {
+    font-size: 1.8rem;
+    color: var(--neon-cyan);
+    margin-bottom: 1rem;
+  }
+
+  .contact-card p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-card a {
+    color: var(--neon-green);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .contact-card a:hover {
+    text-shadow: 0 0 10px var(--glow-green);
+  }
+
+  .alert-box {
+    background: rgba(15, 23, 41, 0.8);
+    border: 2px solid var(--neon-cyan);
+    padding: 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+    margin: 3rem 0;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+  }
+
+  .alert-box h3 {
+    font-size: 2.2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    font-weight: 900;
+  }
+
+  .alert-box p {
+    font-size: 1.2rem;
+    color: #fff;
+    line-height: 1.6;
+  }
+
+  .info-section {
+    background: rgba(15, 23, 41, 0.6);
+    border: 2px solid var(--neon-green);
+    border-radius: 20px;
+    padding: 3rem;
+    margin-top: 3rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .info-section h3 {
+    font-size: 1.8rem;
+    color: var(--neon-green);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .info-section p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .info-section ul {
+    list-style: none;
+    margin-top: 1.5rem;
+  }
+
+  .info-section li {
+    padding: 0.75rem 0;
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .info-section li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--neon-green);
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+
+  footer {
+    background: rgba(10, 10, 26, 0.95);
+    border-top: 2px solid var(--neon-green);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 5rem;
+  }
+
+  footer p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .page-title { font-size: 2.5rem; }
+    nav { flex-direction: column; }
+    .nav-links { flex-direction: column; gap: 1rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">⚡ ReBoot Lab</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="page-header">
+  <div class="container">
+    <h1 class="page-title">═══ Contact Us! ═══</h1>
+    <p class="page-subtitle">Let's Get Your Tech Back in the Game!</p>
+  </div>
+</section>
+
+<section class="contact-content">
+  <div class="container">
+    
+    <div class="alert-box">
+      <h3>⚡ Work By Appointment Only</h3>
+      <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">No Walk-Ins</p>
+      <p style="margin-top: 1rem;">
+        Text or email for scheduling—text response is fastest!<br>
+        (No unlisted or blocked caller IDs, please)
+      </p>
+    </div>
+
+    <div class="contact-grid">
+      
+      <div class="contact-card">
+        <div class="contact-icon">📧</div>
+        <h3>Email</h3>
+        <p>Best for detailed inquiries and project descriptions.</p>
+        <a href="mailto:rebootlabs26@gmail.com">rebootlabs26@gmail.com</a>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-icon">💬</div>
+        <h3>Text Only — Fastest Response</h3>
+        <p>Questions? Ready to schedule? Text us!</p>
+        <a href="tel:6236960109">(623) 696-0109</a>
+      </div>
+
+    </div>
+
+    <div class="info-section">
+      <h3>⏰ Get In Touch!</h3>
+      <p>
+        <strong>SIMPLE, low-pressure communication.</strong> Tell us what you need — we'll let you know if it's something we can help with and if you'll love what you get for the price. No hard selling, no awkward sales pitches. Just honest assessment and transparent pricing.
+      </p>
+      <p style="margin-top: 1.5rem;">
+        <strong>When you contact us, please include:</strong>
+      </p>
+      <ul>
+        <li>What device/system you need help with</li>
+        <li>What problem you're experiencing (or what you want built)</li>
+        <li>Your budget (if applicable)</li>
+        <li>Your preferred contact method</li>
+      </ul>
+      <p style="margin-top: 1.5rem; text-align: center; font-size: 1.1rem; color: var(--neon-cyan);">
+        We'll get back to you within 24-48 hours to schedule a consultation!
+      </p>
+    </div>
+
+    <div class="info-section" style="border-color: var(--neon-purple);">
+      <h3>📍 Location</h3>
+      <p style="text-align: center;">
+        <strong>We operate by appointment only from our private lab.</strong><br>
+        Exact address provided upon scheduling your service.
+      </p>
+      <p style="margin-top: 1.5rem; text-align: center; color: var(--text-muted);">
+        Local pickup and drop-off available. Remote diagnostics for some issues.<br>
+        Serving the local area and surrounding communities.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 ReBoot Lab. All rights reserved. | Built with ⚡ and 💚 | Pi/4:13</p>
+  </div>
+</footer>
+
+</body>
+</html>

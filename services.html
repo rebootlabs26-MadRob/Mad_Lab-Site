@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Services — ReBoot Lab</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0a0a1a;
+    --bg-navy: #0f1729;
+    --neon-green: #00ff66;
+    --neon-cyan: #00ffff;
+    --neon-purple: #bf00ff;
+    --neon-pink: #ff00ff;
+    --text-bright: #e0f0ff;
+    --text-muted: #8899bb;
+    --glow-green: rgba(0, 255, 102, 0.6);
+    --glow-cyan: rgba(0, 255, 255, 0.6);
+    --glow-purple: rgba(191, 0, 255, 0.6);
+  }
+
+  * { 
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-navy) 100%);
+    color: var(--text-bright);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      repeating-linear-gradient(90deg, transparent 0, transparent 79px, var(--neon-green) 79px, var(--neon-green) 81px),
+      repeating-linear-gradient(0deg, transparent 0, transparent 79px, var(--neon-cyan) 79px, var(--neon-cyan) 81px);
+    opacity: 0.03;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(20px);
+    background: rgba(10, 10, 26, 0.85);
+    border-bottom: 2px solid var(--neon-green);
+    box-shadow: 0 4px 20px rgba(0, 255, 102, 0.3);
+    z-index: 100;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--neon-green);
+    text-shadow: 0 0 20px var(--glow-green);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-bright);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--neon-green);
+    text-shadow: 0 0 10px var(--glow-green);
+  }
+
+  .page-header {
+    text-align: center;
+    padding: 4rem 2rem 2rem;
+  }
+
+  .page-title {
+    font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+    font-size: 4.5rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px var(--glow-green);
+    letter-spacing: 6px;
+  }
+
+  .page-subtitle {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    color: var(--neon-purple);
+    text-shadow: 0 0 15px var(--glow-purple);
+    letter-spacing: 2px;
+  }
+
+  .services-detailed {
+    padding: 3rem 2rem 5rem;
+  }
+
+  .service-section {
+    background: rgba(15, 23, 41, 0.6);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 20px;
+    padding: 3rem;
+    margin-bottom: 3rem;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .service-section:hover {
+    border-color: var(--neon-green);
+    box-shadow: 0 0 20px rgba(0, 255, 102, 0.3);
+  }
+
+  .service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .service-toggle {
+    font-size: 1.5rem;
+    color: var(--neon-green);
+    transition: transform 0.3s ease;
+  }
+
+  .service-section.expanded .service-toggle {
+    transform: rotate(180deg);
+  }
+
+  .service-features {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    list-style: none;
+    margin-top: 0;
+  }
+
+  .service-section.expanded .service-features {
+    max-height: 1000px;
+    margin-top: 2rem;
+  }
+
+  .service-section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    color: var(--neon-cyan);
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 15px var(--glow-cyan);
+    letter-spacing: 2px;
+  }
+
+  .service-features {
+    list-style: none;
+    margin-top: 2rem;
+  }
+
+  .service-features li {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(136, 153, 187, 0.2);
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .service-features li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--neon-green);
+    font-size: 1.5rem;
+  }
+
+  .service-features li:last-child {
+    border-bottom: none;
+  }
+
+  .pricing-note {
+    background: rgba(10, 10, 26, 0.7);
+    border: 2px solid var(--neon-cyan);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    margin: 3rem 0;
+    box-shadow: 0 0 20px var(--glow-cyan);
+  }
+
+  .pricing-note h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon-cyan);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+  }
+
+  .pricing-note p {
+    color: var(--text-bright);
+    font-size: 1.1rem;
+  }
+
+  footer {
+    background: rgba(10, 10, 26, 0.95);
+    border-top: 2px solid var(--neon-green);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 5rem;
+  }
+
+  footer p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .page-title { font-size: 2.5rem; }
+    nav { flex-direction: column; }
+    .nav-links { flex-direction: column; gap: 1rem; }
+    .service-section { padding: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">⚡ ReBoot Lab</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="page-header">
+  <div class="container">
+    <h1 class="page-title">═══ Services & Capabilities ═══</h1>
+    <p class="page-subtitle">Custom PC Builds | Upgrades | Electronics Repair</p>
+  </div>
+</section>
+
+<section class="services-detailed">
+  <div class="container">
+    
+    <div class="service-section expanded" onclick="this.classList.toggle('expanded')">
+      <div class="service-header">
+        <h2>🖥️ Custom PC Builds</h2>
+        <span class="service-toggle">▼</span>
+      </div>
+      <p>Get a fully personalized PC built from scratch to match your exact needs and budget. Whether you're gaming, streaming, editing video, or running high-performance workloads, we build systems that deliver.</p>
+      <ul class="service-features">
+        <li>Hand-picked components for maximum performance-per-dollar</li>
+        <li>Gaming rigs optimized for high FPS and ultra settings</li>
+        <li>Workstation builds for content creation and 3D rendering</li>
+        <li>Budget-friendly builds without compromising quality</li>
+        <li>RGB lighting and custom cable management</li>
+        <li>Thermal optimization and stress testing</li>
+        <li>Windows installation, driver setup, and initial configuration</li>
+      </ul>
+    </div>
+
+    <div class="service-section" onclick="this.classList.toggle('expanded')">
+      <div class="service-header">
+        <h2>🔧 Hardware Diagnostics & Repair</h2>
+        <span class="service-toggle">▼</span>
+      </div>
+      <p>System not booting? Experiencing crashes or strange behavior? Our advanced diagnostic tools pinpoint hardware issues fast—for PCs and various electronics.</p>
+      <ul class="service-features">
+        <li>Component-level testing (CPU, GPU, RAM, storage)</li>
+        <li>Thermal analysis and cooling system inspection</li>
+        <li>Power supply testing and replacement</li>
+        <li>Motherboard and BIOS troubleshooting</li>
+        <li>Graphics card repair and testing</li>
+        <li>Storage drive recovery and cloning</li>
+        <li>Electronics diagnostics for various devices</li>
+        <li>Circuit board inspection and testing</li>
+        <li>Soldering repairs (component-level work, NOT microsoldering yet)</li>
+      </ul>
+    </div>
+
+    <div class="service-section" onclick="this.classList.toggle('expanded')">
+      <div class="service-header">
+        <h2>⚡ Performance Upgrades & Optimization</h2>
+        <span class="service-toggle">▼</span>
+      </div>
+      <p>Breathe new life into your existing system with targeted upgrades and professional tuning.</p>
+      <ul class="service-features">
+        <li>RAM upgrades for faster multitasking</li>
+        <li>SSD upgrades with data migration</li>
+        <li>GPU upgrades for gaming and rendering</li>
+        <li>Safe overclocking for extra performance</li>
+        <li>System cleanup and software optimization</li>
+        <li>Thermal paste replacement and cooling upgrades</li>
+      </ul>
+    </div>
+
+    <div class="service-section" onclick="this.classList.toggle('expanded')">
+      <div class="service-header">
+        <h2>🛡️ Virus Removal & Security</h2>
+        <span class="service-toggle">▼</span>
+      </div>
+      <p>Remove malware, spyware, and viruses that slow down your system or compromise your data.</p>
+      <ul class="service-features">
+        <li>Complete malware and virus removal</li>
+        <li>System security hardening</li>
+        <li>Browser hijacker and malicious extension removal</li>
+        <li>Security settings configuration</li>
+        <li>Antivirus installation and setup</li>
+      </ul>
+    </div>
+
+    <div class="service-section" onclick="this.classList.toggle('expanded')">
+      <div class="service-header">
+        <h2>💾 Data Recovery & Transfer</h2>
+        <span class="service-toggle">▼</span>
+      </div>
+      <p>Lost files? Upgrading systems? We ensure your data is safe, recovered, or transferred seamlessly.</p>
+      <ul class="service-features">
+        <li>Data recovery from failing drives</li>
+        <li>SSD/HDD cloning and migration</li>
+        <li>Cloud backup setup</li>
+        <li>Old system to new system transfers</li>
+        <li>Recovery data consolidation (organizing recovered files)</li>
+      </ul>
+    </div>
+
+    <div class="service-section" onclick="this.classList.toggle('expanded')">
+      <div class="service-header">
+        <h2>🌐 Network & Connectivity Fixes</h2>
+        <span class="service-toggle">▼</span>
+      </div>
+      <p>Network issues bringing you down? We fix connectivity problems and optimize your setup.</p>
+      <ul class="service-features">
+        <li>Network troubleshooting and optimization (Wi-Fi, Ethernet, drivers)</li>
+        <li>Router setup and security configuration</li>
+        <li>Ethernet network configuration</li>
+        <li>Connection stability diagnostics</li>
+      </ul>
+    </div>
+
+    <div class="service-section" onclick="this.classList.toggle('expanded')">
+      <div class="service-header">
+        <h2>🔧 Electronics Repair Services</h2>
+        <span class="service-toggle">▼</span>
+      </div>
+      <p>Beyond PCs—we repair a wide range of electronics with precision and care.</p>
+      <ul class="service-features">
+        <li>Soldering work (component replacement, wire repairs, connector fixes)</li>
+        <li>Circuit board repair and diagnostics</li>
+        <li>Power supply troubleshooting and repair</li>
+        <li>Electronic device diagnostics</li>
+        <li>Audio/video equipment repair</li>
+        <li>Console and peripheral repair</li>
+      </ul>
+      <p style="color: var(--neon-cyan); margin-top: 1.5rem; font-style: italic;">
+        *Note: Microsoldering services coming soon as we expand our equipment capabilities.*
+      </p>
+    </div>
+
+    <div class="pricing-note">
+      <h3>💰 Honest, Transparent Pricing</h3>
+      <p>Every project is unique. Contact us for a free consultation and quote tailored to your needs.</p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 ReBoot Lab. All rights reserved. | Built with ⚡ and 💚 | Pi/4:13</p>
+  </div>
+</footer>
+
+</body>
+</html>
