@@ -123,27 +123,11 @@
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
-    position: relative;
-  }
-
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
-    transition: width 0.3s ease;
   }
 
   .nav-links a:hover {
     color: var(--neon-green);
     text-shadow: 0 0 10px var(--glow-green);
-  }
-
-  .nav-links a:hover::after {
-    width: 100%;
   }
 
   /* Hero Section */
